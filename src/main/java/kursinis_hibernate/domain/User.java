@@ -44,4 +44,16 @@ public class User {
 	@Column(name = "birthDate", nullable = false)
 	private LocalDate birthDate;
 
+	@Override
+	public String toString() {
+		return "User{" +
+				"id=" + id +
+				", login='" + login + '\'' +
+				", password='" + password + '\'' +
+				", name='" + name + '\'' +
+				", surname='" + surname + '\'' +
+				", userType=" + userType +
+				", birthDate=" + birthDate +
+				'}';
+	}
 }
