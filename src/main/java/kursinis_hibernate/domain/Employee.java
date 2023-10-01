@@ -11,15 +11,15 @@ import lombok.Setter;
 @Setter
 @Entity
 public class Employee extends User {
-	@Column(name = "employeeId", nullable = true, length = 6)
+	@Column(name = "employeeId", length = 6)
 	private String employeeId;
 
-	@Column(name = "medCertificate", nullable = true, length = 12)
+	@Column(name = "medCertificate", length = 12)
 	private String medCertificate;
 
-	@Column(name = "employmentDate", nullable = true)
+	@Column(name = "employmentDate")
 	private LocalDate employmentDate;
 
-	@Column(name = "isAdmin", nullable = true)
+	@Column(name = "isAdmin")
 	private boolean isAdmin;
 }
