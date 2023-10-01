@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane xmlns:fx="http://javafx.com/fxml/1"
+      xmlns="http://javafx.com/javafx/20.0.1"
+      fx:controller="kursinis_hibernate.fxControllers.ProfileController"
+      prefHeight="640.0" prefWidth="850.0"
+      style="-fx-background-color: #c00909">
+
+</Pane>

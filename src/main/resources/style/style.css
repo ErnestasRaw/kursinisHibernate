@@ -1,0 +1,51 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('fonts/Roboto-Medium.ttf') format('truetype');
+    /*TODO: find a way to add multiple fonts or whole family at once*/
+    /*src: url('fonts/Roboto.zip') format('truetype');*/
+    /*src: url('fonts/Roboto-BlackItalic.ttf')format('truetype');;*/
+    /*src: url('fonts/Roboto-Bold.ttf')format('truetype');*/
+    /*src: url('fonts/Roboto-BoldItalic.ttf')format('truetype');*/
+    /*src: url('fonts/Roboto-Italic.ttf')format('truetype');*/
+    /*src: url('fonts/Roboto-Light.ttf')format('truetype');*/
+    /*src: url('fonts/Roboto-LightItalic.ttf')format('truetype');*/
+    /*src: url('fonts/Roboto-MediumItalic.ttf')format('truetype');*/
+    /*src: url('fonts/Roboto-Regular.ttf')format('truetype');*/
+    /*src: url('fonts/Roboto-Thin.ttf')format('truetype');*/
+    /*src: url('fonts/Roboto-ThinItalic.ttf')format('truetype');*/
+}
+
+.button {
+    -fx-background-color: #0663BE;
+    -fx-border-color: rgba(6, 65, 162, 0.2);
+    -fx-border-width: 0 0 1 0;
+}
+
+.button:pressed {
+    -fx-background-color: #05427f;
+}
+
+.button:focused {
+    -fx-background-color: #05427f;
+}
+
+.toggle-button {
+    -fx-background-color: #0663BE;
+    -fx-border-color: rgb(81, 104, 222);
+    -fx-border-width: 1 1 1 1;
+}
+
+.toggle-button:pressed {
+    -fx-background-color: #05427f;
+}
+
+.toggle-button:focused {
+    -fx-background-color: #05427f;
+}
+
+.text-field {
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: rgba(6, 65, 162, 0.2);
+    -fx-border-width: 0 0 1 0;
+    -fx-prompt-text-fill: #3a3a3a;
+}

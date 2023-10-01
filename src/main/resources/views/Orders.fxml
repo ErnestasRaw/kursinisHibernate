@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="kursinis_hibernate.fxControllers.OrdersController"
+            prefHeight="640.0" prefWidth="850.0"
+            style="-fx-background-color: #11ef0a">
+
+</AnchorPane>

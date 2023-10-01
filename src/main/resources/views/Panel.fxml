@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="700.0" prefWidth="1100.0"
+            xmlns="http://javafx.com/javafx/20.0.1" fx:controller="kursinis_hibernate.fxControllers.PanelController">
+    <top>
+        <Pane prefHeight="60.0" prefWidth="1100.0" style="-fx-background-color: #293dbb;" BorderPane.alignment="CENTER">
+            <Label layoutX="30.0" layoutY="18.0" text="Maybe page title?" textFill="WHITE">
+                <font>
+                    <Font name="Roboto Medium" size="20.0"/>
+                </font>
+            </Label>
+            <Label fx:id="exit" layoutX="1065.0" layoutY="14.0" prefHeight="24.0" prefWidth="24.0">
+                <graphic>
+                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../icons/close_window.png"/>
+                    </ImageView>
+                </graphic>
+            </Label>
+        </Pane>
+    </top>
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <StackPane fx:id="contentArea" prefHeight="640.0" prefWidth="850.0" AnchorPane.bottomAnchor="0.0"
+                       AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+        </AnchorPane>
+    </center>
+    <left>
+        <Pane prefHeight="640.0" prefWidth="250.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="640.0" prefWidth="250.0" style="-fx-background-color: #0663BE;">
+                <Button fx:id="profileButton" alignment="BASELINE_LEFT" mnemonicParsing="false"
+                        onAction="#onProfileButtonClicked" prefHeight="50.0" prefWidth="258.0"
+                        stylesheets="@../style/style.css" text="Vartojo profilis" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Medium" size="16.0"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../icons/user-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <cursor>
+                        <Cursor fx:constant="OPEN_HAND"/>
+                    </cursor>
+                    <padding>
+                        <Insets left="30.0"/>
+                    </padding>
+                </Button>
+                <Button fx:id="productsButton" alignment="BASELINE_LEFT" mnemonicParsing="false"
+                        onAction="#onProductsButtonClicked" prefHeight="50.0" prefWidth="258.0"
+                        stylesheets="@../style/style.css" text="Prekės" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Medium" size="16.0"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../icons/product-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <cursor>
+                        <Cursor fx:constant="OPEN_HAND"/>
+                    </cursor>
+                    <padding>
+                        <Insets left="30.0"/>
+                    </padding>
+                </Button>
+                <Button fx:id="orderButton" alignment="BASELINE_LEFT" mnemonicParsing="false"
+                        onAction="#onOrderButtonClicked" prefHeight="50.0" prefWidth="258.0"
+                        stylesheets="@../style/style.css" text="Krepšelis" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Medium" size="16.0"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../icons/cart-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <cursor>
+                        <Cursor fx:constant="OPEN_HAND"/>
+                    </cursor>
+                    <padding>
+                        <Insets left="30.0"/>
+                    </padding>
+                </Button>
+                <Button fx:id="ordersButton" alignment="BASELINE_LEFT" mnemonicParsing="false"
+                        onAction="#onOrdersButtonClicked" prefHeight="50.0" prefWidth="258.0"
+                        stylesheets="@../style/style.css" text="Mano užsakymai" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Medium" size="16.0"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../icons/orders-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <cursor>
+                        <Cursor fx:constant="OPEN_HAND"/>
+                    </cursor>
+                    <padding>
+                        <Insets left="30.0"/>
+                    </padding>
+                </Button>
+                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="50.0" prefWidth="258.0"
+                        stylesheets="@../style/style.css" text="A" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Medium" size="16.0"/>
+                    </font>
+                    <graphic>
+                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                            <Image url="@../icons/user-icon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <cursor>
+                        <Cursor fx:constant="OPEN_HAND"/>
+                    </cursor>
+                    <padding>
+                        <Insets left="30.0"/>
+                    </padding>
+                </Button>
+            </VBox>
+        </Pane>
+    </left>
+</BorderPane>
