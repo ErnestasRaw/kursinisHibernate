@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane prefHeight="640.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.kursinis.kursinis_hibernate.fxControllers.ProductsController">
+    <BorderPane prefHeight="640.0" prefWidth="850.0">
+        <center>
+            <TableView fx:id="productsTable" prefHeight="600.0" prefWidth="850.0" BorderPane.alignment="CENTER">
+                <columns>
+                    <TableColumn fx:id="titleColumn" prefWidth="131.0" text="Pavadinimas"/>
+                    <TableColumn fx:id="descriptionColumn" prefWidth="108.0" text="Aprašymas"/>
+                    <TableColumn fx:id="priceColumn" prefWidth="75.0" text="Kaina"/>
+                    <TableColumn fx:id="typeColumn" prefWidth="55.0" text="Tipas"/>
+                    <TableColumn fx:id="heightColumn" prefWidth="75.0" text="Aukštis"/>
+                    <TableColumn fx:id="wheelSizeColumn" prefWidth="75.0" text="Rato dydis"/>
+                    <TableColumn fx:id="frameSizeColumn" prefWidth="75.0" text="Rėmo dydis"/>
+                    <TableColumn fx:id="materialColumn" prefWidth="75.0" text="Medžiaga"/>
+                    <TableColumn prefWidth="85.0"/>
+                </columns>
+            </TableView>
+        </center>
+        <bottom>
+            <Pane fx:id="employeePane" prefHeight="100.0" prefWidth="850.0" BorderPane.alignment="CENTER">
+                <TextField fx:id="titleField" layoutX="18.0" layoutY="22.0" maxWidth="150.0" promptText="Pavadinimas"/>
+                <TextField fx:id="descriptionField" layoutX="174.0" layoutY="22.0" maxWidth="150.0"
+                           promptText="Aprašymas"/>
+                <TextField fx:id="priceField" layoutX="332.0" layoutY="22.0" maxWidth="150.0" promptText="Kaina"/>
+                <TextField fx:id="wheelSizeField" layoutX="331.0" layoutY="53.0" prefWidth="150.0"
+                           promptText="Rato dydis"/>
+                <TextField fx:id="frameSizeField" layoutX="173.0" layoutY="53.0" prefWidth="150.0"
+                           promptText="Rėmo dydis"/>
+                <ComboBox fx:id="typeField" layoutX="491.0" layoutY="22.0" onAction="#onTypeChanged" prefWidth="150.0"
+                          promptText="Tipas"/>
+                <TextField fx:id="heightField" layoutX="17.0" layoutY="53.0" prefWidth="150.0" promptText="Aukštis"/>
+                <TextField fx:id="materialField" layoutX="662.0" layoutY="22.0" prefHeight="25.0" prefWidth="171.0"
+                           promptText="Medžiaga"/>
+                <Button fx:id="insertButton" layoutX="662.0" layoutY="53.0" mnemonicParsing="false"
+                        onAction="#onInsertButtonClicked" prefHeight="25.0" prefWidth="171.0"
+                        text="Įterpti naują prekę"/>
+            </Pane>
+        </bottom>
+    </BorderPane>
+</Pane>
