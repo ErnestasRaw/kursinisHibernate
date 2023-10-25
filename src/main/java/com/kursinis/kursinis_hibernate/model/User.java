@@ -53,6 +53,7 @@ public abstract class User implements Serializable {
 		this.surname = surname;
 	}
 
+
 	public User(int id, String login, String password, LocalDate birthDate) {
 		this.id = id;
 		this.login = login;
@@ -62,13 +63,6 @@ public abstract class User implements Serializable {
 
 	@Override
 	public String toString() {
-		return "User{" +
-				"id=" + id +
-				", login='" + login + '\'' +
-				", password='" + password + '\'' +
-				", name='" + name + '\'' +
-				", surname='" + surname + '\'' +
-				", birthDate=" + birthDate +
-				'}';
+		return login;
 	}
 }

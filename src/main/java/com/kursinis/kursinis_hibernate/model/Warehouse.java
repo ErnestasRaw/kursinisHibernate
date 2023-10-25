@@ -25,19 +25,14 @@ public class Warehouse implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-
 	private String title;
-
 	private String address;
-
 	@ManyToMany(mappedBy = "worksAtWarehouse", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Employee> managers;
-
 	@OneToMany(mappedBy = "warehouse", cascade = CascadeType.ALL)
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Product> inStockProducts;
-
 
 	public Warehouse(String title, String address) {
 		this.title = title;

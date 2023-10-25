@@ -1,17 +1,19 @@
 package com.kursinis.kursinis_hibernate.fxControllers;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Objects;
 
 import com.kursinis.kursinis_hibernate.Controllers.UserController;
-import com.kursinis.kursinis_hibernate.StartGUI;
 import com.kursinis.kursinis_hibernate.hibernateControllers.UserHib;
+import com.kursinis.kursinis_hibernate.model.Address;
+import com.kursinis.kursinis_hibernate.model.Client;
+import com.kursinis.kursinis_hibernate.model.Employee;
+import com.kursinis.kursinis_hibernate.utils.PasswordHashingUtil;
 import jakarta.persistence.EntityManagerFactory;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -39,11 +41,9 @@ public class LoginController {
 	private UserHib userHib;
 
 	public void onLoginClicked() throws IOException {
-
-		userHib = new UserHib( entityManagerFactory );
 		User user = userHib.authenticateUserByCredentials( loginField.getText(), passwordField.getText() );
 		if ( user != null ) {
-			UserController.getInstance().setId( user.getId() );
+			UserController.getInstance().setLoggedInUser( user );
 			changeToPanelStage();
 		}
 
@@ -66,6 +66,20 @@ public class LoginController {
 
 	public void setData(EntityManagerFactory entityManagerFactory) {
 		this.entityManagerFactory = entityManagerFactory;
+		userHib = new UserHib( entityManagerFactory );
+		//TEMPORARY
+		User employee = new Employee(
+				"a",
+				PasswordHashingUtil.hashPassword( "a" ),
+				LocalDate.now(),
+				"adminu",
+				"adminas",
+				"adm001",
+				LocalDate.now(),
+				"auydaosd",
+				true
+		);
+		userHib.createUser( employee );
 	}
 
 }

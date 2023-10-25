@@ -7,6 +7,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // or InheritanceType.JOINED, InheritanceType.TABLE_PER_CLASS
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "product_type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Product implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,8 +39,11 @@ public abstract class Product implements Serializable {
 	private Double price;
 	@Column(name = "description", length = 2000, nullable = false)
 	private String description;
-	@Column(name = "type", insertable = false, updatable = false)
+	@Column(name = "product_type", insertable = false, updatable = false)
 	private String productType;
+	@OneToMany(mappedBy = "", cascade = CascadeType.ALL, orphanRemoval = true)
+	List<Comment> comments;
+
 	@ManyToOne
 	Warehouse warehouse;
 	@ManyToOne
@@ -50,15 +54,17 @@ public abstract class Product implements Serializable {
 		this.description = description;
 	}
 
-	public Product(String title, String description, double price) {
+	public Product(String title, String description, String productType, double price) {
+		this.productType = productType;
 		this.title = title;
 		this.description = description;
 		this.price = price;
 	}
 
-	public Product(String title, String description, double price, Warehouse warehouse) {
+	public Product(String title, String description, String productType, double price, Warehouse warehouse) {
 		this.title = title;
 		this.description = description;
+		this.productType = productType;
 		this.price = price;
 		this.warehouse = warehouse;
 	}

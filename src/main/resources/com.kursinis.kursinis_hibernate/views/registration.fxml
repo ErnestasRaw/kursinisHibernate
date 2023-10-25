@@ -40,7 +40,7 @@
         <PasswordField fx:id="repeatPasswordField" layoutX="298.0" layoutY="249.0" prefHeight="40.0" prefWidth="253.0"
                        promptText="Pakartokite slaptažodį" stylesheets="@style.css"/>
         <Button fx:id="registerButton" layoutX="298.0" layoutY="320.0" mnemonicParsing="false"
-                onAction="#onRegisterClicked" prefHeight="40.0" prefWidth="253.0" stylesheets="@style.css"
+                onAction="#registerUser" prefHeight="40.0" prefWidth="253.0" stylesheets="@style.css"
                 text="Registruotis" textFill="WHITE">
             <font>
                 <Font name="Roboto Medium" size="24.0"/>

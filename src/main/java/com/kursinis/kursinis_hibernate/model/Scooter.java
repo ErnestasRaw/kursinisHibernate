@@ -23,10 +23,11 @@ public class Scooter extends Product {
 	public Scooter(
 			String title,
 			String description,
+			String productType,
 			double price,
 			int height,
-			String material) {
-		super( title, description, price );
+			String material, Warehouse warehouse) {
+		super( title, description, productType, price, warehouse );
 		this.height = height;
 		this.material = material;
 	}

@@ -26,8 +26,9 @@ public class Client extends User {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "address_id", nullable = true)
 	private Address address;
-
 	private String cardNo;
+	@OneToOne
+	private Cart cart;
 
 	public Client(
 			String login,
@@ -36,7 +37,24 @@ public class Client extends User {
 			String name,
 			String surname,
 			Address address,
-			String cardNo) {
+			String cardNo,
+			Cart cart
+	) {
+		super( login, password, birthDate, name, surname );
+		this.address = address;
+		this.cardNo = cardNo;
+		this.cart = cart;
+	}
+
+	public Client(
+			String login,
+			String password,
+			LocalDate birthDate,
+			String name,
+			String surname,
+			Address address,
+			String cardNo
+	) {
 		super( login, password, birthDate, name, surname );
 		this.address = address;
 		this.cardNo = cardNo;

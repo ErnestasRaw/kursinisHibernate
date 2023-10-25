@@ -119,6 +119,7 @@ public class UserHib {
 		return new ArrayList<>();
 	}
 
+	//Gal iskelt i controlleri?
 	public User getUserById(int id) {
 		EntityManager em = null;
 		try {

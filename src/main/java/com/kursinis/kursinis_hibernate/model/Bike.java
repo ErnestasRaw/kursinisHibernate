@@ -20,8 +20,15 @@ public class Bike extends Product {
 	private int wheelSize;
 	private int frameSize;
 
-	public Bike(String title, String description, double price, int wheelSize, int frameSize) {
-		super( title, description, price );
+	public Bike(
+			String title,
+			String description,
+			String productType,
+			double price,
+			int wheelSize,
+			int frameSize,
+			Warehouse warehouse) {
+		super( title, description, productType, price, warehouse );
 		this.wheelSize = wheelSize;
 		this.frameSize = frameSize;
 	}

@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import com.kursinis.kursinis_hibernate.Controllers.UserController;
+import com.kursinis.kursinis_hibernate.hibernateControllers.GenericHib;
 import com.kursinis.kursinis_hibernate.hibernateControllers.UserHib;
 import com.kursinis.kursinis_hibernate.model.Client;
 import com.kursinis.kursinis_hibernate.model.User;
@@ -55,14 +56,11 @@ public class ProfileController implements Initializable {
 	public Button updateButton;
 
 	private EntityManagerFactory entityManagerFactory;
-	private UserHib userHib;
+	private GenericHib genericHib;
 
-	public void onUpdateClicked() {
-
-	}
 
 	private void setDefaultValues() {
-		User user = userHib.getUserById( UserController.getInstance().getId() );
+		User user = genericHib.getEntityById( User.class, UserController.getInstance().getLoggedInUserId() );
 		if ( user instanceof Client client ) {
 			cardNoField.setText( client.getCardNo() );
 			countryField.setText( client.getAddress().getCountry() );
@@ -76,8 +74,8 @@ public class ProfileController implements Initializable {
 	}
 
 	private void toggleVisibilityByUserType() {
-		userHib = new UserHib( entityManagerFactory );
-		User user = userHib.getUserById( UserController.getInstance().getId() );
+		genericHib = new GenericHib( entityManagerFactory );
+		User user = genericHib.getEntityById( User.class, UserController.getInstance().getLoggedInUserId() );
 
 		if ( user instanceof Client ) {
 			cardNoField.setVisible( true );
@@ -96,7 +94,7 @@ public class ProfileController implements Initializable {
 	}
 
 	public void onUpdateProfileButtonClicked(ActionEvent actionEvent) {
-		User user = userHib.getUserById( UserController.getInstance().getId() );
+		User user = genericHib.getEntityById( User.class, UserController.getInstance().getLoggedInUserId() );
 		user.setLogin( loginField.getText() );
 		user.setName( nameField.getText() );
 		user.setSurname( surnameField.getText() );
@@ -114,13 +112,19 @@ public class ProfileController implements Initializable {
 		else {
 			user.setPassword( PasswordHashingUtil.hashPassword( passwordField.getText() ) );
 		}
-		userHib.updateUser( user );
+		genericHib.update( user );
 	}
 
 	public void setData(EntityManagerFactory entityManagerFactory) {
 		this.entityManagerFactory = entityManagerFactory;
 		toggleVisibilityByUserType();
 		setDefaultValues();
+		loadData();
+	}
+
+	private void loadData() {
+		genericHib = new GenericHib( entityManagerFactory );
+
 	}
 
 

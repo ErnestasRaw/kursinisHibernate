@@ -7,6 +7,10 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.kursinis.kursinis_hibernate.Controllers.UserController;
+import com.kursinis.kursinis_hibernate.model.Client;
+import com.kursinis.kursinis_hibernate.model.Employee;
+import com.kursinis.kursinis_hibernate.model.User;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +37,7 @@ public class PanelController implements Initializable {
 	public Button profileButton;
 	public Button userOrdersButton;
 	public Button usersButton;
+	public Text employeeTabPane;
 
 	@FXML
 	private StackPane contentArea;
@@ -40,7 +46,7 @@ public class PanelController implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
-
+		toggleVisibilityByUserType();
 	}
 
 
@@ -55,8 +61,31 @@ public class PanelController implements Initializable {
 		contentArea.getChildren().setAll( fxmlRoot );
 	}
 
+	private void toggleVisibilityByUserType() {
+		if ( UserController.getInstance().getLoggedInUser() instanceof Client ) {
+			employeeTabPane.setVisible( false );
+			usersButton.setVisible( false );
+			ordersButton.setVisible( false );
+		}
+		else if ( UserController.getInstance().getLoggedInUser() instanceof Employee ) {
+			usersButton.setVisible( true );
+			ordersButton.setVisible( true );
+			employeeTabPane.setVisible( true );
+		}
+	}
+
 	public void onProfileButtonClicked(ActionEvent actionEvent) throws IOException {
 		loadProfileStackPane();
+	}
+
+	public void onWarehouseButtonClicked(ActionEvent actionEvent) throws IOException {
+		FXMLLoader fxml = new FXMLLoader( Objects.requireNonNull( getClass().getResource(
+				"/warehouse.fxml" ) ) );
+		Parent fxmlRoot = fxml.load();
+		WarehouseController warehouseController = fxml.getController();
+		warehouseController.setData( entityManagerFactory );
+		contentArea.getChildren().removeAll();
+		contentArea.getChildren().setAll( fxmlRoot );
 	}
 
 	public void onCartButtonClicked(ActionEvent actionEvent) throws IOException {
@@ -94,8 +123,14 @@ public class PanelController implements Initializable {
 
 	}
 
-	public void onUsersButtonClicked(ActionEvent actionEvent) {
-
+	public void onUsersButtonClicked(ActionEvent actionEvent) throws IOException {
+		FXMLLoader fxml = new FXMLLoader( Objects.requireNonNull( getClass().getResource(
+				"/users.fxml" ) ) );
+		Parent fxmlRoot = fxml.load();
+		UsersController usersController = fxml.getController();
+		usersController.setData( entityManagerFactory );
+		contentArea.getChildren().removeAll();
+		contentArea.getChildren().setAll( fxmlRoot );
 	}
 
 	public void onOrdersButtonClicked(ActionEvent actionEvent) {

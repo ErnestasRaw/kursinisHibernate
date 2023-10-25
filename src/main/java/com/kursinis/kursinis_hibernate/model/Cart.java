@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
 public class Cart {
@@ -23,7 +23,16 @@ public class Cart {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private LocalDate dateCreated;
+	private String status;
+
 	@OneToMany(mappedBy = "", cascade = CascadeType.ALL, orphanRemoval = true)
 	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<Product> itemsInCart;
+	private List<Product> productsInCart;
+	@OneToOne
+	private Client client;
+
+	public Cart() {
+		this.dateCreated = LocalDate.now();
+		this.status = "not paid";
+	}
 }

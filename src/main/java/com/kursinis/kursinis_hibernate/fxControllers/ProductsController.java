@@ -1,14 +1,21 @@
 package com.kursinis.kursinis_hibernate.fxControllers;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
-import com.kursinis.kursinis_hibernate.hibernateControllers.ProductHib;
+import com.kursinis.kursinis_hibernate.Controllers.UserController;
+import com.kursinis.kursinis_hibernate.hibernateControllers.GenericHib;
 import com.kursinis.kursinis_hibernate.model.Bike;
+import com.kursinis.kursinis_hibernate.model.Cart;
+import com.kursinis.kursinis_hibernate.model.Client;
+import com.kursinis.kursinis_hibernate.model.Employee;
 import com.kursinis.kursinis_hibernate.model.Other;
 import com.kursinis.kursinis_hibernate.model.Product;
 import com.kursinis.kursinis_hibernate.model.ProductType;
 import com.kursinis.kursinis_hibernate.model.Scooter;
+import com.kursinis.kursinis_hibernate.model.User;
+import com.kursinis.kursinis_hibernate.model.Warehouse;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,15 +23,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,30 +42,34 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductsController implements Initializable {
+	//Insert laukai
 	@FXML
-	public TextField titleField;
+	public TextField titleInsertField;
 	@FXML
-	public TextField descriptionField;
+	public TextField descriptionInsertField;
 	@FXML
-	public TextField priceField;
+	public TextField priceInsertField;
 	@FXML
-	public TextField wheelSizeField;
+	public TextField wheelSizeInsertField;
 	@FXML
-	public TextField frameSizeField;
+	public TextField frameSizeInsertField;
 	@FXML
-	public TextField materialField;
+	public TextField materialInsertField;
 	@FXML
-	public TextField heightField;
-	@FXML
-	public TableView<Product> productsTable;
+	public TextField heightInsertField;
 	@FXML
 	public Pane employeePane;
-
 	@FXML
 	public ComboBox<ProductType> typeField = new ComboBox<>();
 	@FXML
 	public Button insertButton;
-
+	@FXML
+	public ComboBox<Warehouse> warehouseInsertField;
+	@FXML
+	public ComboBox<Warehouse> warehouseComboBox;
+	//Table laukai
+	@FXML
+	public TableView<Product> productsTable;
 	@FXML
 	public TableColumn<Product, String> titleColumn;
 	@FXML
@@ -66,86 +77,191 @@ public class ProductsController implements Initializable {
 	@FXML
 	public TableColumn<Product, Double> priceColumn;
 	@FXML
-	public TableColumn<Product, String> typeColumn;
+	public TableColumn<Product, Void> addToCartColumn;
+
+	//Update/delete laukai
+	public Label materialLabel;
 	@FXML
-	public TableColumn<Product, Integer> heightColumn;
+	public Label warehouseLabel;
 	@FXML
-	public TableColumn<Product, Integer> wheelSizeColumn;
+	public Label wheelSizeLabel;
 	@FXML
-	public TableColumn<Product, Integer> frameSizeColumn;
+	public Label frameSizeLabel;
 	@FXML
-	public TableColumn<Product, String> materialColumn;
+	public Text heightTextField;
+	@FXML
+	public Text frameSizeTextField;
+	@FXML
+	public Label heightLabel;
+
+	@FXML
+	public Text materialTextField;
+	@FXML
+	public Text wheelSizeTextField;
+	@FXML
+	public TextField materialField;
+	@FXML
+	public TextField heightField;
+	@FXML
+	public TextField frameSizeField;
+	@FXML
+	public TextField wheelSizeField;
+	@FXML
+	public Button updateButton;
+	@FXML
+	public TextField priceField;
+	@FXML
+	public ComboBox<Warehouse> warehouseField = new ComboBox<>();
+	public Button deleteButton;
+
+
 	private EntityManagerFactory entityManagerFactory;
 
 
 	ObservableList<Product> products = FXCollections.observableArrayList();
 
-	private ProductHib productHib;
+	private GenericHib genericHib;
+	Product selectedProduct;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		toggleEmployeePane();
 		titleColumn.setCellValueFactory( new PropertyValueFactory<>( "title" ) );
 		descriptionColumn.setCellValueFactory( new PropertyValueFactory<>( "description" ) );
 		priceColumn.setCellValueFactory( new PropertyValueFactory<>( "price" ) );
-		typeColumn.setCellValueFactory( new PropertyValueFactory<>( "type" ) );
-		heightColumn.setCellValueFactory( new PropertyValueFactory<>( "height" ) );
-		wheelSizeColumn.setCellValueFactory( new PropertyValueFactory<>( "wheelSize" ) );
-		frameSizeColumn.setCellValueFactory( new PropertyValueFactory<>( "frameSize" ) );
-		materialColumn.setCellValueFactory( new PropertyValueFactory<>( "material" ) );
+		final User user = UserController.getInstance().getLoggedInUser();
+		if ( user instanceof Client client ) {
+			addToCartColumn.setCellFactory( param -> new TableCell<>() {
+				private final Button addToCartButton = new Button( "Į krepšelį" );
 
-		productsTable.setItems( products );
+				{
+					addToCartButton.setOnAction( event -> {
+						Product product = getTableView().getItems().get( getIndex() );
+						Client client = (Client) user;
+						Cart cart = client.getCart();
+						cart.getProductsInCart().add( product );
+					} );
+				}
 
-		if ( typeField.getValue() == null ) {
-			wheelSizeField.setVisible( false );
-			frameSizeField.setVisible( false );
-			heightField.setVisible( false );
-			materialField.setVisible( false );
+				@Override
+				protected void updateItem(Void item, boolean empty) {
+					super.updateItem( item, empty );
+					if ( empty ) {
+						setGraphic( null );
+					}
+					else {
+						setGraphic( addToCartButton );
+					}
+				}
+			} );
 		}
+		productsTable.setOnMouseClicked( event -> {
+			if ( event.getClickCount() == 1 ) {
+				selectedProduct = productsTable.getSelectionModel().getSelectedItem();
+				if ( selectedProduct != null ) {
+					showDetailedDescription( selectedProduct );
+				}
+			}
+		} );
+		if ( typeField.getValue() == null ) {
+			wheelSizeInsertField.setVisible( false );
+			frameSizeInsertField.setVisible( false );
+			heightInsertField.setVisible( false );
+			materialInsertField.setVisible( false );
+		}
+	}
+
+	private void toggleEmployeePane() {
+		employeePane.setVisible( UserController.getInstance().getLoggedInUser() instanceof Employee );
+	}
+
+	private void showDetailedDescription(Product selectedProduct) {
+		if ( selectedProduct instanceof Scooter scooter ) {
+			materialField.setText( scooter.getMaterial() );
+			materialField.setVisible( true );
+			heightField.setText( String.valueOf( scooter.getHeight() ) );
+			heightInsertField.setVisible( true );
+
+			frameSizeField.setVisible( false );
+			wheelSizeField.setVisible( false );
+		}
+		else if ( selectedProduct instanceof Bike bike ) {
+			wheelSizeField.setText( String.valueOf( bike.getWheelSize() ) );
+			frameSizeField.setText( String.valueOf( bike.getFrameSize() ) );
+			materialField.setVisible( false );
+			heightField.setVisible( false );
+			wheelSizeField.setVisible( true );
+		}
+		else {
+			Other other = (Other) selectedProduct;
+			materialField.setVisible( false );
+			heightField.setVisible( false );
+			frameSizeField.setVisible( false );
+			wheelSizeField.setVisible( false );
+		}
+
 	}
 
 	private void loadData() {
 		products.removeAll();
-		productHib = new ProductHib( entityManagerFactory );
-		products.addAll( productHib.getAllProducts() );
+		productsTable.refresh();
+		products.addAll( genericHib.getAllRecords( Product.class ) );
+		productsTable.setItems( products );
 	}
+
 
 	public void setData(EntityManagerFactory entityManagerFactory) {
 		this.entityManagerFactory = entityManagerFactory;
+		genericHib = new GenericHib( entityManagerFactory );
 		typeField.getItems().addAll( ProductType.values() );
+		typeField.getSelectionModel().select( 2 );
+
+		List<Warehouse> record = genericHib.getAllRecords( Warehouse.class );
+		warehouseComboBox.getItems().addAll( genericHib.getAllRecords( Warehouse.class ) );
+		warehouseInsertField.getItems().addAll( genericHib.getAllRecords( Warehouse.class ) );
+		List<ProductType> productTypes = genericHib.getAllRecords( ProductType.class );
+		typeField.getItems().addAll( genericHib.getAllRecords( ProductType.class ) );
 		loadData();
 	}
 
 
 	public void onInsertButtonClicked(ActionEvent actionEvent) {
-		productHib = new ProductHib( entityManagerFactory );
+		Warehouse selectedWarehouse = warehouseInsertField.getSelectionModel().getSelectedItem();
+		Warehouse warehouse = genericHib.getEntityById( Warehouse.class, selectedWarehouse.getId() );
 		if ( typeField.getValue() == ProductType.SCOOTER ) {
 			Product product = new Scooter(
-					titleField.getText(),
-					descriptionField.getText(),
-					Double.parseDouble( priceField.getText() ),
-					Integer.parseInt( heightField.getText() ),
-					materialField.getText()
+					titleInsertField.getText(),
+					typeField.getValue().toString(),
+					descriptionInsertField.getText(),
+					Double.parseDouble( priceInsertField.getText() ),
+					Integer.parseInt( heightInsertField.getText() ),
+					materialInsertField.getText(),
+					warehouse
+
 			);
-			productHib.insertProduct( product );
+			genericHib.create( product );
 		}
 		else if ( typeField.getValue() == ProductType.BIKE ) {
 			Product product = new Bike(
-					titleField.getText(),
-					descriptionField.getText(),
-					Double.parseDouble( priceField.getText() ),
-					Integer.parseInt( wheelSizeField.getText() ),
-					Integer.parseInt( frameSizeField.getText() )
+					titleInsertField.getText(),
+					descriptionInsertField.getText(),
+					typeField.getValue().toString(),
+					Double.parseDouble( priceInsertField.getText() ),
+					Integer.parseInt( wheelSizeInsertField.getText() ),
+					Integer.parseInt( frameSizeInsertField.getText() ),
+					warehouse
 			);
-			productHib.insertProduct( product );
+			genericHib.create( product );
 		}
 		else {
 			Product product = new Other(
-					titleField.getText(),
-					descriptionField.getText(),
-					Double.parseDouble( priceField.getText() )
+					titleInsertField.getText(),
+					descriptionInsertField.getText(),
+					"OTHER",
+					Double.parseDouble( priceInsertField.getText() ),
+					warehouse
 			);
-			productHib.insertProduct( product );
+			genericHib.create( product );
 		}
 		loadData();
 	}
@@ -153,24 +269,33 @@ public class ProductsController implements Initializable {
 
 	public void onTypeChanged(ActionEvent actionEvent) {
 		if ( typeField.getValue() == ProductType.SCOOTER ) {
-			wheelSizeField.setVisible( false );
-			frameSizeField.setVisible( false );
-			heightField.setVisible( true );
-			materialField.setVisible( true );
+			wheelSizeInsertField.setVisible( false );
+			frameSizeInsertField.setVisible( false );
+			heightInsertField.setVisible( true );
+			materialInsertField.setVisible( true );
 		}
 		else if ( typeField.getValue() == ProductType.BIKE ) {
-			wheelSizeField.setVisible( true );
-			frameSizeField.setVisible( true );
-			heightField.setVisible( false );
-			materialField.setVisible( false );
+			wheelSizeInsertField.setVisible( true );
+			frameSizeInsertField.setVisible( true );
+			heightInsertField.setVisible( false );
+			materialInsertField.setVisible( false );
 		}
 		else {
-			wheelSizeField.setVisible( false );
-			frameSizeField.setVisible( false );
-			heightField.setVisible( false );
-			materialField.setVisible( false );
+			wheelSizeInsertField.setVisible( false );
+			frameSizeInsertField.setVisible( false );
+			heightInsertField.setVisible( false );
+			materialInsertField.setVisible( false );
 		}
 	}
 
 
+	public void deleteProduct(ActionEvent actionEvent) {
+		genericHib.delete( Product.class, selectedProduct.getId().intValue() );
+		products.removeAll();
+		productsTable.refresh();
+	}
+
+	public void updateProduct(ActionEvent actionEvent) {
+		genericHib.update( selectedProduct );
+	}
 }

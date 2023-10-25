@@ -1,46 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<Pane prefHeight="640.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.kursinis.kursinis_hibernate.fxControllers.ProductsController">
+<Pane prefHeight="640.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kursinis.kursinis_hibernate.fxControllers.ProductsController">
     <BorderPane prefHeight="640.0" prefWidth="850.0">
-        <center>
-            <TableView fx:id="productsTable" prefHeight="600.0" prefWidth="850.0" BorderPane.alignment="CENTER">
-                <columns>
-                    <TableColumn fx:id="titleColumn" prefWidth="131.0" text="Pavadinimas"/>
-                    <TableColumn fx:id="descriptionColumn" prefWidth="108.0" text="Aprašymas"/>
-                    <TableColumn fx:id="priceColumn" prefWidth="75.0" text="Kaina"/>
-                    <TableColumn fx:id="typeColumn" prefWidth="55.0" text="Tipas"/>
-                    <TableColumn fx:id="heightColumn" prefWidth="75.0" text="Aukštis"/>
-                    <TableColumn fx:id="wheelSizeColumn" prefWidth="75.0" text="Rato dydis"/>
-                    <TableColumn fx:id="frameSizeColumn" prefWidth="75.0" text="Rėmo dydis"/>
-                    <TableColumn fx:id="materialColumn" prefWidth="75.0" text="Medžiaga"/>
-                    <TableColumn prefWidth="85.0"/>
-                </columns>
-            </TableView>
-        </center>
         <bottom>
             <Pane fx:id="employeePane" prefHeight="100.0" prefWidth="850.0" BorderPane.alignment="CENTER">
-                <TextField fx:id="titleField" layoutX="18.0" layoutY="22.0" maxWidth="150.0" promptText="Pavadinimas"/>
-                <TextField fx:id="descriptionField" layoutX="174.0" layoutY="22.0" maxWidth="150.0"
-                           promptText="Aprašymas"/>
-                <TextField fx:id="priceField" layoutX="332.0" layoutY="22.0" maxWidth="150.0" promptText="Kaina"/>
-                <TextField fx:id="wheelSizeField" layoutX="331.0" layoutY="53.0" prefWidth="150.0"
-                           promptText="Rato dydis"/>
-                <TextField fx:id="frameSizeField" layoutX="173.0" layoutY="53.0" prefWidth="150.0"
-                           promptText="Rėmo dydis"/>
-                <ComboBox fx:id="typeField" layoutX="491.0" layoutY="22.0" onAction="#onTypeChanged" prefWidth="150.0"
-                          promptText="Tipas"/>
-                <TextField fx:id="heightField" layoutX="17.0" layoutY="53.0" prefWidth="150.0" promptText="Aukštis"/>
-                <TextField fx:id="materialField" layoutX="662.0" layoutY="22.0" prefHeight="25.0" prefWidth="171.0"
-                           promptText="Medžiaga"/>
-                <Button fx:id="insertButton" layoutX="662.0" layoutY="53.0" mnemonicParsing="false"
-                        onAction="#onInsertButtonClicked" prefHeight="25.0" prefWidth="171.0"
-                        text="Įterpti naują prekę"/>
+                <TextField fx:id="titleInsertField" layoutX="18.0" layoutY="22.0" maxWidth="150.0" promptText="Pavadinimas" />
+                <TextField fx:id="descriptionInsertField" layoutX="174.0" layoutY="22.0" maxWidth="150.0" promptText="Aprašymas" />
+                <TextField fx:id="priceInsertField" layoutX="332.0" layoutY="22.0" maxWidth="150.0" promptText="Kaina" />
+                <TextField fx:id="wheelSizeInsertField" layoutX="331.0" layoutY="53.0" prefWidth="150.0" promptText="Rato dydis" />
+                <TextField fx:id="frameSizeInsertField" layoutX="173.0" layoutY="53.0" prefWidth="150.0" promptText="Rėmo dydis" />
+                <ComboBox fx:id="typeField" layoutX="491.0" layoutY="22.0" onAction="#onTypeChanged" prefWidth="150.0" promptText="Tipas" />
+                <TextField fx:id="heightInsertField" layoutX="17.0" layoutY="53.0" prefWidth="150.0" promptText="Aukštis" />
+                <TextField fx:id="materialInsertField" layoutX="662.0" layoutY="22.0" prefHeight="25.0" prefWidth="171.0" promptText="Medžiaga" />
+                <ComboBox fx:id="warehouseInsertField" layoutX="491.0" layoutY="53.0" prefWidth="150.0" promptText="Sandelys" />
+                <Button fx:id="insertButton" layoutX="662.0" layoutY="53.0" mnemonicParsing="false" onAction="#onInsertButtonClicked" prefHeight="25.0" prefWidth="171.0" text="Įterpti naują prekę" />
             </Pane>
         </bottom>
+        <left>
+            <TableView fx:id="productsTable" prefHeight="540.0" prefWidth="380.0" BorderPane.alignment="CENTER">
+                <columns>
+                    <TableColumn fx:id="titleColumn" prefWidth="99.0" text="Pavadinimas" />
+                    <TableColumn fx:id="descriptionColumn" prefWidth="98.0" text="Aprašymas" />
+                    <TableColumn fx:id="priceColumn" prefWidth="85.0" text="Kaina" />
+                    <TableColumn fx:id="addToCartColumn" prefWidth="97.0" text="Veiksmas" />
+                </columns>
+            </TableView>
+        </left>
+        <center>
+            <Pane prefHeight="540.0" prefWidth="420.0" BorderPane.alignment="CENTER">
+                <Text fx:id="wheelSizeTextField" layoutX="139.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                <Label layoutX="14.0" layoutY="130.0" prefHeight="60.0" prefWidth="120.0" text="Komentarai">
+                    <font>
+                        <Font size="16.0" />
+                    </font>
+                </Label>
+                <TextArea layoutX="11.0" layoutY="480.0" prefHeight="60.0" prefWidth="335.0" promptText="Komentaras" />
+                <Button layoutX="352.0" layoutY="480.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="100.0" text="Pateikti" />
+
+
+                <Label fx:id="materialLabel" layoutX="14.0" layoutY="2.0" prefHeight="25.0" prefWidth="70.0" text="Medžiaga" />
+                <TextField fx:id="materialField" layoutX="84.0" layoutY="3.0" />
+                <Label fx:id="heightLabel" layoutX="14.0" layoutY="35.0" prefHeight="25.0" prefWidth="70.0" text="Aukšis" />
+                <TextField fx:id="heightField" layoutX="84.0" layoutY="36.0" />
+                <Label fx:id="frameSizeLabel" layoutX="14.0" layoutY="71.0" prefHeight="25.0" prefWidth="70.0" text="Rėmo dydis" />
+                <TextField fx:id="frameSizeField" layoutX="84.0" layoutY="72.0" />
+                <Label fx:id="wheelSizeLabel" layoutX="14.0" layoutY="105.0" prefHeight="25.0" prefWidth="70.0" text="Rato dydis" />
+                <TextField fx:id="wheelSizeField" layoutX="84.0" layoutY="106.0" />
+                <ComboBox fx:id="warehouseComboBox" layoutX="306.0" layoutY="3.0" prefWidth="150.0" />
+                <Label fx:id="warehouseLabel" layoutX="248.0" layoutY="3.0" prefHeight="25.0" prefWidth="70.0" text="Sandėlis" />
+                <Button fx:id="updateButton" layoutX="248.0" layoutY="72.0" mnemonicParsing="false" onAction="#updateProduct" prefHeight="25.0" prefWidth="208.0" text="Atnaujinti" />
+                <Button fx:id="deleteButton" layoutX="248.0" layoutY="105.0" mnemonicParsing="false" onAction="#deleteProduct" prefHeight="25.0" prefWidth="208.0" text="Ištrinti" />
+            </Pane>
+        </center>
     </BorderPane>
 </Pane>
