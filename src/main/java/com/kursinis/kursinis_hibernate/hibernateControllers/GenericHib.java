@@ -92,8 +92,6 @@ public class GenericHib {
 		return result;
 	}
 
-	//READ operacija, tik istrauks visus irasus, kurie yra DB
-
 	public <T> List<T> getAllRecords(Class<T> entityClass) {
 		EntityManager em = null;
 		List<T> result = new ArrayList<>();

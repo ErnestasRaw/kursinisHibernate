@@ -7,42 +7,40 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
 public class WarehouseController {
-	@FXML
-	public ListView<Warehouse> warehouseList;
-	@FXML
-	public TextField addressWarehouseField;
-	@FXML
-	public TextField titleWarehouseField;
 
+	public ListView<Warehouse> warehouseList;
+	public TextField addressWarehouseField;
+	public TextField titleWarehouseField;
 	GenericHib genericHib;
 
 	public void setData(EntityManagerFactory entityManagerFactory) {
 		genericHib = new GenericHib( entityManagerFactory );
-		loadSelectedWarehouseData();
-	}
-
-
-	public void onWarehouseSelect() {
-		Warehouse selectedWarehouse = (Warehouse) warehouseList.getSelectionModel().getSelectedItem();
-		titleWarehouseField.setText( selectedWarehouse.getTitle() );
-		addressWarehouseField.setText( selectedWarehouse.getAddress() );
-	}
-
-	public void loadSelectedWarehouseData() {
-		warehouseList.getItems().clear();
-		warehouseList.getItems().addAll( genericHib.getAllRecords( Warehouse.class ) );
-	}
-
-	public void addNewWarehouse(ActionEvent actionEvent) {
-		genericHib.create( new Warehouse( titleWarehouseField.getText(), addressWarehouseField.getText() ) );
 		loadWarehouseList();
 	}
 
 	private void loadWarehouseList() {
 		warehouseList.getItems().clear();
 		warehouseList.getItems().addAll( genericHib.getAllRecords( Warehouse.class ) );
+	}
+
+	public void onWarehouseSelect(MouseEvent mouseEvent) {
+		genericHib.create( new Warehouse( titleWarehouseField.getText(), addressWarehouseField.getText() ) );
+		loadWarehouseList();
+
+	}
+
+	public void onWarehouseSelect() {
+		Warehouse selectedWarehouse = warehouseList.getSelectionModel().getSelectedItem();
+		titleWarehouseField.setText( selectedWarehouse.getTitle() );
+		addressWarehouseField.setText( selectedWarehouse.getAddress() );
+	}
+
+	public void addNewWarehouse(ActionEvent actionEvent) {
+		genericHib.create( new Warehouse( titleWarehouseField.getText(), addressWarehouseField.getText() ) );
+		loadWarehouseList();
 	}
 
 	public void updateWarehouse(ActionEvent actionEvent) {
@@ -56,10 +54,7 @@ public class WarehouseController {
 
 	public void removeWarehouse(ActionEvent actionEvent) {
 		Warehouse selectedWarehouse = (Warehouse) warehouseList.getSelectionModel().getSelectedItem();
-		Warehouse warehouse = genericHib.getEntityById( Warehouse.class, selectedWarehouse.getId() );
 		genericHib.delete( Warehouse.class, selectedWarehouse.getId() );
 		loadWarehouseList();
 	}
-
-
 }

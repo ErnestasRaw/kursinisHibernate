@@ -16,11 +16,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@DiscriminatorValue("E")
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorValue("E")
 public class Employee extends User {
 
 	/*@Id

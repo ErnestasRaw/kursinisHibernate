@@ -1,16 +1,10 @@
 package com.kursinis.kursinis_hibernate.fxControllers;
 
-import java.net.URL;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import com.kursinis.kursinis_hibernate.Controllers.UserController;
+import com.kursinis.kursinis_hibernate.model.Other;
+import com.kursinis.kursinis_hibernate.utils.UserController;
 import com.kursinis.kursinis_hibernate.hibernateControllers.GenericHib;
 import com.kursinis.kursinis_hibernate.model.Bike;
-import com.kursinis.kursinis_hibernate.model.Cart;
-import com.kursinis.kursinis_hibernate.model.Client;
 import com.kursinis.kursinis_hibernate.model.Employee;
-import com.kursinis.kursinis_hibernate.model.Other;
 import com.kursinis.kursinis_hibernate.model.Product;
 import com.kursinis.kursinis_hibernate.model.ProductType;
 import com.kursinis.kursinis_hibernate.model.Scooter;
@@ -20,18 +14,14 @@ import jakarta.persistence.EntityManagerFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,261 +31,216 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductsController implements Initializable {
-	//Insert laukai
-	@FXML
-	public TextField titleInsertField;
-	@FXML
-	public TextField descriptionInsertField;
-	@FXML
-	public TextField priceInsertField;
-	@FXML
-	public TextField wheelSizeInsertField;
-	@FXML
-	public TextField frameSizeInsertField;
-	@FXML
-	public TextField materialInsertField;
-	@FXML
-	public TextField heightInsertField;
-	@FXML
-	public Pane employeePane;
-	@FXML
-	public ComboBox<ProductType> typeField = new ComboBox<>();
-	@FXML
-	public Button insertButton;
-	@FXML
-	public ComboBox<Warehouse> warehouseInsertField;
-	@FXML
-	public ComboBox<Warehouse> warehouseComboBox;
-	//Table laukai
-	@FXML
+public class ProductsController {
+	//Table
 	public TableView<Product> productsTable;
-	@FXML
 	public TableColumn<Product, String> titleColumn;
-	@FXML
 	public TableColumn<Product, String> descriptionColumn;
-	@FXML
 	public TableColumn<Product, Double> priceColumn;
-	@FXML
-	public TableColumn<Product, Void> addToCartColumn;
-
-	//Update/delete laukai
-	public Label materialLabel;
-	@FXML
-	public Label warehouseLabel;
-	@FXML
-	public Label wheelSizeLabel;
-	@FXML
-	public Label frameSizeLabel;
-	@FXML
-	public Text heightTextField;
-	@FXML
-	public Text frameSizeTextField;
-	@FXML
-	public Label heightLabel;
-
-	@FXML
-	public Text materialTextField;
-	@FXML
-	public Text wheelSizeTextField;
-	@FXML
-	public TextField materialField;
-	@FXML
-	public TextField heightField;
-	@FXML
-	public TextField frameSizeField;
-	@FXML
-	public TextField wheelSizeField;
-	@FXML
+	public TableColumn<Product, ProductType> typeColumn;
+	public TableColumn<Product, Warehouse> warehouseColumn;
+	public TableColumn<Product, Integer> heightColumn;
+	public TableColumn<Product, String> materialColumn;
+	public TableColumn<Product, Double> wheelSizeColumn;
+	public TableColumn<Product, Double> frameSizeColumn;
+	//Comments
+	public TextArea commentTextArea;
+	public Button commentButton;
+	//Product CRUD
+	public Pane employeePane;
+	public TextField titleTextField;
+	public TextField descriptionTextField;
+	public TextField priceTextField;
+	public ComboBox<ProductType> productTypeComboBox;
+	public ComboBox<Warehouse> warehouseComboBox;
+	public TextField wheelSizeTextField;
+	public TextField frameSizeTextField;
+	public TextField heightTextField;
+	public TextField materialTextField;
+	public Button insertButton;
 	public Button updateButton;
-	@FXML
-	public TextField priceField;
-	@FXML
-	public ComboBox<Warehouse> warehouseField = new ComboBox<>();
 	public Button deleteButton;
 
-
-	private EntityManagerFactory entityManagerFactory;
-
-
 	ObservableList<Product> products = FXCollections.observableArrayList();
-
 	private GenericHib genericHib;
 	Product selectedProduct;
+	ProductType selectedProductType;
+	final User user = UserController.getInstance().getLoggedInUser();
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+
+	public void setData(EntityManagerFactory entityManagerFactory) {
+		genericHib = new GenericHib( entityManagerFactory );
+		initializeTable();
 		toggleEmployeePane();
+		setComboBoxValues();
+		setVisibility();
+		readData();
+		productsTable.getItems().addAll( products );
+	}
+
+	//--------------------------------------------------------------------------//
+	//--------------------------------------------------------------------------//
+	//-----------------------------------CRUD-----------------------------------//
+	//--------------------------------------------------------------------------//
+	//--------------------------------------------------------------------------//
+
+	private void readData() {
+		products.removeAll();
+		products.addAll( genericHib.getAllRecords( Product.class ) );
+	}
+
+	public void insertProduct(ActionEvent actionEvent) {
+		Warehouse selectedWarehouse = warehouseComboBox.getSelectionModel().getSelectedItem();
+		Warehouse warehouse = genericHib.getEntityById( Warehouse.class, selectedWarehouse.getId() );
+
+		if ( productTypeComboBox.getSelectionModel().getSelectedItem() == ProductType.SCOOTER ) {
+			Scooter scooter = new Scooter(
+					titleTextField.getText(),
+					descriptionTextField.getText(),
+					productTypeComboBox.getSelectionModel().getSelectedItem().toString(),
+					Double.parseDouble( priceTextField.getText() ),
+					Integer.parseInt( heightTextField.getText() ),
+					materialTextField.getText(),
+					warehouse
+			);
+			genericHib.create( scooter );
+		}
+		else if ( productTypeComboBox.getSelectionModel().getSelectedItem() == ProductType.BIKE ) {
+			Bike bike = new Bike(
+					titleTextField.getText(),
+					descriptionTextField.getText(),
+					productTypeComboBox.getSelectionModel().getSelectedItem().toString(),
+					Double.parseDouble( priceTextField.getText() ),
+					Integer.parseInt( wheelSizeTextField.getText() ),
+					Integer.parseInt( frameSizeTextField.getText() ),
+					warehouse
+			);
+			genericHib.create( bike );
+		}
+		else {
+			Other other = new Other(
+					titleTextField.getText(),
+					descriptionTextField.getText(),
+					productTypeComboBox.getSelectionModel().getSelectedItem().toString(),
+					Double.parseDouble( priceTextField.getText() ),
+					warehouse
+			);
+			readData();
+			productsTable.getItems().clear();
+			productsTable.getItems().addAll( products );
+			productsTable.refresh();
+			genericHib.create( other );
+		}
+	}
+
+	public void deleteProduct() {
+		genericHib.delete( Product.class, Math.toIntExact( selectedProduct.getId() ) );
+		products.removeAll();
+		productsTable.getItems().clear();
+		productsTable.getItems().addAll( products );
+		productsTable.refresh();
+	}
+
+	public void updateProduct(ActionEvent actionEvent) {
+		genericHib.update( selectedProduct );
+	}
+
+
+	//--------------------------------------------------------------------------//
+	//--------------------------------------------------------------------------//
+	//--------------------------------UTILITIES---------------------------------//
+	//--------------------------------------------------------------------------//
+	//--------------------------------------------------------------------------//
+
+	private void setComboBoxValues() {
+		productTypeComboBox.getItems().addAll( ProductType.values() );
+		productTypeComboBox.getSelectionModel().select( 2 );
+		warehouseComboBox.getItems().addAll( genericHib.getAllRecords( Warehouse.class ) );
+		warehouseComboBox.getSelectionModel().select( 0 );
+	}
+
+	private void initializeTable() {
 		titleColumn.setCellValueFactory( new PropertyValueFactory<>( "title" ) );
 		descriptionColumn.setCellValueFactory( new PropertyValueFactory<>( "description" ) );
 		priceColumn.setCellValueFactory( new PropertyValueFactory<>( "price" ) );
-		final User user = UserController.getInstance().getLoggedInUser();
-		if ( user instanceof Client client ) {
-			addToCartColumn.setCellFactory( param -> new TableCell<>() {
-				private final Button addToCartButton = new Button( "Į krepšelį" );
-
-				{
-					addToCartButton.setOnAction( event -> {
-						Product product = getTableView().getItems().get( getIndex() );
-						Client client = (Client) user;
-						Cart cart = client.getCart();
-						cart.getProductsInCart().add( product );
-					} );
-				}
-
-				@Override
-				protected void updateItem(Void item, boolean empty) {
-					super.updateItem( item, empty );
-					if ( empty ) {
-						setGraphic( null );
-					}
-					else {
-						setGraphic( addToCartButton );
-					}
-				}
-			} );
-		}
+		typeColumn.setCellValueFactory( new PropertyValueFactory<>( "productType" ) );
+		warehouseColumn.setCellValueFactory( new PropertyValueFactory<>( "warehouse" ) );
+		heightColumn.setCellValueFactory( new PropertyValueFactory<>( "height" ) );
+		materialColumn.setCellValueFactory( new PropertyValueFactory<>( "material" ) );
+		wheelSizeColumn.setCellValueFactory( new PropertyValueFactory<>( "wheelSize" ) );
+		frameSizeColumn.setCellValueFactory( new PropertyValueFactory<>( "frameSize" ) );
 		productsTable.setOnMouseClicked( event -> {
 			if ( event.getClickCount() == 1 ) {
 				selectedProduct = productsTable.getSelectionModel().getSelectedItem();
-				if ( selectedProduct != null ) {
-					showDetailedDescription( selectedProduct );
-				}
+				setVisibility();
 			}
 		} );
-		if ( typeField.getValue() == null ) {
-			wheelSizeInsertField.setVisible( false );
-			frameSizeInsertField.setVisible( false );
-			heightInsertField.setVisible( false );
-			materialInsertField.setVisible( false );
+	}
+
+	private void setVisibility() {
+		if ( selectedProduct instanceof Scooter ) {
+			productTypeComboBox.getSelectionModel().select( ProductType.SCOOTER );
+			heightTextField.setText( String.valueOf( ( (Scooter) selectedProduct ).getHeight() ) );
+			materialTextField.setText( ( (Scooter) selectedProduct ).getMaterial() );
+			frameSizeTextField.setVisible( false );
+			wheelSizeTextField.setVisible( false );
+			materialTextField.setVisible( true );
+			heightTextField.setVisible( true );
 		}
+		else if ( selectedProduct instanceof Bike ) {
+			productTypeComboBox.getSelectionModel().select( ProductType.BIKE );
+			wheelSizeTextField.setText( String.valueOf( ( (Bike) selectedProduct ).getWheelSize() ) );
+			frameSizeTextField.setText( String.valueOf( ( (Bike) selectedProduct ).getFrameSize() ) );
+			frameSizeTextField.setVisible( true );
+			wheelSizeTextField.setVisible( true );
+			materialTextField.setVisible( false );
+			heightTextField.setVisible( false );
+		}
+		else {
+			productTypeComboBox.getSelectionModel().select( ProductType.OTHER );
+			frameSizeTextField.setVisible( false );
+			wheelSizeTextField.setVisible( false );
+			materialTextField.setVisible( false );
+			heightTextField.setVisible( false );
+		}
+		if ( selectedProduct != null ) {
+			titleTextField.setText( selectedProduct.getTitle() );
+			descriptionTextField.setText( selectedProduct.getDescription() );
+			priceTextField.setText( String.valueOf( selectedProduct.getPrice() ) );
+			warehouseComboBox.getSelectionModel().select( selectedProduct.getWarehouse() );
+			productTypeComboBox.getSelectionModel()
+					.select( ProductType.valueOf( selectedProduct.getProductType() ) );
+			warehouseComboBox.getSelectionModel().select( selectedProduct.getWarehouse() );
+		}
+
 	}
 
 	private void toggleEmployeePane() {
 		employeePane.setVisible( UserController.getInstance().getLoggedInUser() instanceof Employee );
 	}
 
-	private void showDetailedDescription(Product selectedProduct) {
-		if ( selectedProduct instanceof Scooter scooter ) {
-			materialField.setText( scooter.getMaterial() );
-			materialField.setVisible( true );
-			heightField.setText( String.valueOf( scooter.getHeight() ) );
-			heightInsertField.setVisible( true );
+	public void addComment() {
+	}
 
-			frameSizeField.setVisible( false );
-			wheelSizeField.setVisible( false );
+
+	public void typeSelectHandler(ActionEvent actionEvent) {
+		if ( productTypeComboBox.getSelectionModel().getSelectedItem() == ProductType.SCOOTER ) {
+			frameSizeTextField.setVisible( false );
+			wheelSizeTextField.setVisible( false );
+			materialTextField.setVisible( true );
+			heightTextField.setVisible( true );
 		}
-		else if ( selectedProduct instanceof Bike bike ) {
-			wheelSizeField.setText( String.valueOf( bike.getWheelSize() ) );
-			frameSizeField.setText( String.valueOf( bike.getFrameSize() ) );
-			materialField.setVisible( false );
-			heightField.setVisible( false );
-			wheelSizeField.setVisible( true );
+		else if ( productTypeComboBox.getSelectionModel().getSelectedItem() == ProductType.BIKE ) {
+			frameSizeTextField.setVisible( true );
+			wheelSizeTextField.setVisible( true );
+			materialTextField.setVisible( false );
+			heightTextField.setVisible( false );
 		}
 		else {
-			Other other = (Other) selectedProduct;
-			materialField.setVisible( false );
-			heightField.setVisible( false );
-			frameSizeField.setVisible( false );
-			wheelSizeField.setVisible( false );
+			frameSizeTextField.setVisible( false );
+			wheelSizeTextField.setVisible( false );
+			materialTextField.setVisible( false );
+			heightTextField.setVisible( false );
 		}
-
-	}
-
-	private void loadData() {
-		products.removeAll();
-		productsTable.refresh();
-		products.addAll( genericHib.getAllRecords( Product.class ) );
-		productsTable.setItems( products );
-	}
-
-
-	public void setData(EntityManagerFactory entityManagerFactory) {
-		this.entityManagerFactory = entityManagerFactory;
-		genericHib = new GenericHib( entityManagerFactory );
-		typeField.getItems().addAll( ProductType.values() );
-		typeField.getSelectionModel().select( 2 );
-
-		List<Warehouse> record = genericHib.getAllRecords( Warehouse.class );
-		warehouseComboBox.getItems().addAll( genericHib.getAllRecords( Warehouse.class ) );
-		warehouseInsertField.getItems().addAll( genericHib.getAllRecords( Warehouse.class ) );
-		List<ProductType> productTypes = genericHib.getAllRecords( ProductType.class );
-		typeField.getItems().addAll( genericHib.getAllRecords( ProductType.class ) );
-		loadData();
-	}
-
-
-	public void onInsertButtonClicked(ActionEvent actionEvent) {
-		Warehouse selectedWarehouse = warehouseInsertField.getSelectionModel().getSelectedItem();
-		Warehouse warehouse = genericHib.getEntityById( Warehouse.class, selectedWarehouse.getId() );
-		if ( typeField.getValue() == ProductType.SCOOTER ) {
-			Product product = new Scooter(
-					titleInsertField.getText(),
-					typeField.getValue().toString(),
-					descriptionInsertField.getText(),
-					Double.parseDouble( priceInsertField.getText() ),
-					Integer.parseInt( heightInsertField.getText() ),
-					materialInsertField.getText(),
-					warehouse
-
-			);
-			genericHib.create( product );
-		}
-		else if ( typeField.getValue() == ProductType.BIKE ) {
-			Product product = new Bike(
-					titleInsertField.getText(),
-					descriptionInsertField.getText(),
-					typeField.getValue().toString(),
-					Double.parseDouble( priceInsertField.getText() ),
-					Integer.parseInt( wheelSizeInsertField.getText() ),
-					Integer.parseInt( frameSizeInsertField.getText() ),
-					warehouse
-			);
-			genericHib.create( product );
-		}
-		else {
-			Product product = new Other(
-					titleInsertField.getText(),
-					descriptionInsertField.getText(),
-					"OTHER",
-					Double.parseDouble( priceInsertField.getText() ),
-					warehouse
-			);
-			genericHib.create( product );
-		}
-		loadData();
-	}
-
-
-	public void onTypeChanged(ActionEvent actionEvent) {
-		if ( typeField.getValue() == ProductType.SCOOTER ) {
-			wheelSizeInsertField.setVisible( false );
-			frameSizeInsertField.setVisible( false );
-			heightInsertField.setVisible( true );
-			materialInsertField.setVisible( true );
-		}
-		else if ( typeField.getValue() == ProductType.BIKE ) {
-			wheelSizeInsertField.setVisible( true );
-			frameSizeInsertField.setVisible( true );
-			heightInsertField.setVisible( false );
-			materialInsertField.setVisible( false );
-		}
-		else {
-			wheelSizeInsertField.setVisible( false );
-			frameSizeInsertField.setVisible( false );
-			heightInsertField.setVisible( false );
-			materialInsertField.setVisible( false );
-		}
-	}
-
-
-	public void deleteProduct(ActionEvent actionEvent) {
-		genericHib.delete( Product.class, selectedProduct.getId().intValue() );
-		products.removeAll();
-		productsTable.refresh();
-	}
-
-	public void updateProduct(ActionEvent actionEvent) {
-		genericHib.update( selectedProduct );
 	}
 }

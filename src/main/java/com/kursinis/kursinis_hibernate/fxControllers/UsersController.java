@@ -6,11 +6,8 @@ import com.kursinis.kursinis_hibernate.model.Cart;
 import com.kursinis.kursinis_hibernate.model.Client;
 import com.kursinis.kursinis_hibernate.model.Employee;
 import com.kursinis.kursinis_hibernate.model.User;
-import com.kursinis.kursinis_hibernate.model.Warehouse;
-import com.kursinis.kursinis_hibernate.utils.PasswordHashingUtil;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
@@ -28,105 +25,157 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UsersController {
-	@FXML
 	public ListView<User> usersList;
-	@FXML
 	public TextField nameField;
-	@FXML
 	public TextField loginField;
-	@FXML
 	public TextField surnameField;
-	@FXML
 	public TextField cityField;
-	@FXML
-	public DatePicker birthDateField;
-	@FXML
-	public TextField addressField;
-	@FXML
 	public TextField countryField;
-	@FXML
+	public TextField addressField;
 	public TextField cardNoField;
-	@FXML
-	public TextField employeeIdField;
-	@FXML
 	public TextField medCertificateField;
-	@FXML
+	public TextField employeeIdField;
 	public CheckBox isAdminCheckbox;
-	@FXML
+	public DatePicker birthDateField;
 	public TextField passwordField;
-	public ToggleGroup userTypeRadio;
 	public RadioButton employeeRadio;
+	public ToggleGroup userTypeRadio;
 	public RadioButton clientRadio;
-	@FXML
+	public DatePicker employmentDatePicker;
 	GenericHib genericHib;
 
 	public void setData(EntityManagerFactory entityManagerFactory) {
 		genericHib = new GenericHib( entityManagerFactory );
+		loadUsersList();
+	}
+
+	private void loadUsersList() {
 		usersList.getItems().clear();
 		usersList.getItems().addAll( genericHib.getAllRecords( User.class ) );
 	}
 
+	public void disableEmployeeFields(ActionEvent actionEvent) {
+		employeeIdField.setVisible( false );
+		medCertificateField.setVisible( false );
+		employmentDatePicker.setVisible( false );
+		isAdminCheckbox.setVisible( false );
+
+		cityField.setVisible( true );
+		countryField.setVisible( true );
+		addressField.setVisible( true );
+		cardNoField.setVisible( true );
+
+
+	}
+
+	public void disableClientFields(ActionEvent actionEvent) {
+		cityField.setVisible( false );
+		countryField.setVisible( false );
+		addressField.setVisible( false );
+		cardNoField.setVisible( false );
+
+		employeeIdField.setVisible( true );
+		medCertificateField.setVisible( true );
+		employmentDatePicker.setVisible( true );
+		isAdminCheckbox.setVisible( true );
+	}
+
 	public void onUserSelect(MouseEvent mouseEvent) {
-		User selectedUser = (User) usersList.getSelectionModel().getSelectedItem();
-		nameField.setText( selectedUser.getName() );
-		surnameField.setText( selectedUser.getSurname() );
-		loginField.setText( selectedUser.getLogin() );
-		if ( selectedUser instanceof Client client ) {
-			cityField.setText( ( (Client) selectedUser ).getAddress().getCity() );
-			birthDateField.setValue( client.getBirthDate() );
-			addressField.setText( ( (Client) selectedUser ).getAddress().getAddress() );
-			countryField.setText( ( (Client) selectedUser ).getAddress().getCountry() );
-			cardNoField.setText( ( (Client) selectedUser ).getCardNo() );
-		}
-		if ( selectedUser instanceof Employee employee ) {
-			employeeIdField.setText( employee.getEmployeeId() );
+
+		User selectedUser = usersList.getSelectionModel().getSelectedItem();
+		if ( selectedUser instanceof Employee ) {
+			disableClientFields( null );
+			Employee employee = (Employee) usersList.getSelectionModel().getSelectedItem();
+			nameField.setText( employee.getName() );
+			surnameField.setText( employee.getSurname() );
 			medCertificateField.setText( employee.getMedCertificate() );
+			employeeIdField.setText( employee.getEmployeeId() );
 			isAdminCheckbox.setSelected( employee.isAdmin() );
+			birthDateField.setValue( employee.getBirthDate() );
+			passwordField.setText( employee.getPassword() );
+			loginField.setText( employee.getLogin() );
+			employeeRadio.setSelected( true );
+			clientRadio.setSelected( false );
+			userTypeRadio.selectToggle( employeeRadio );
+			isAdminCheckbox.setSelected( employee.isAdmin() );
+		}
+		else if ( selectedUser instanceof Client ) {
+			disableEmployeeFields( null );
+			Client client = (Client) usersList.getSelectionModel().getSelectedItem();
+			nameField.setText( client.getName() );
+			surnameField.setText( client.getSurname() );
+			cityField.setText( client.getAddress().getCity() );
+			countryField.setText( client.getAddress().getCountry() );
+			addressField.setText( client.getAddress().getAddress() );
+			cardNoField.setText( client.getCardNo() );
+			birthDateField.setValue( client.getBirthDate() );
+			passwordField.setText( client.getPassword() );
+			loginField.setText( client.getLogin() );
+			employeeRadio.setSelected( false );
+			clientRadio.setSelected( true );
+			isAdminCheckbox.setSelected( false );
 		}
 	}
 
 	public void addNewUser(ActionEvent actionEvent) {
-		Cart cart = new Cart();
-		genericHib.create( cart );
-		User user = new Client(
-				loginField.getText(),
-				PasswordHashingUtil.hashPassword( passwordField.getText() ),
-				birthDateField.getValue(),
-				nameField.getText(),
-				surnameField.getText(),
-				new Address(
-						addressField.getText(),
-						cityField.getText(),
-						countryField.getText()
-				),
-				cardNoField.getText(),
-				cart
-		);
+		if ( employeeRadio.isSelected() ) {
+			User employee = new Employee(
+					loginField.getText(),
+					passwordField.getText(),
+					birthDateField.getValue(),
+					nameField.getText(),
+					surnameField.getText(),
+					employeeIdField.getText(),
+					employmentDatePicker.getValue(),
+					medCertificateField.getText(),
+					isAdminCheckbox.isSelected()
+			);
+			genericHib.create( employee );
+
+		}
+		else {
+			Address address = new Address(
+					addressField.getText(),
+					cityField.getText(),
+					countryField.getText()
+			);
+			Cart cart = new Cart();
+			genericHib.create( cart );
+			User client = new Client(
+					loginField.getText(),
+					passwordField.getText(),
+					birthDateField.getValue(),
+					nameField.getText(),
+					surnameField.getText(),
+					address,
+					cardNoField.getText(),
+					cart
+			);
+			genericHib.create( client );
+		}
+		loadUsersList();
 	}
 
 	public void updateUser(ActionEvent actionEvent) {
-		User user = new Client(
-				loginField.getText(),
-				PasswordHashingUtil.hashPassword( passwordField.getText() ),
-				birthDateField.getValue(),
-				nameField.getText(),
-				surnameField.getText(),
-				new Address(
-						addressField.getText(),
-						cityField.getText(),
-						countryField.getText()
-				),
-				cardNoField.getText()
-		);
+		User selectedUser = usersList.getSelectionModel().getSelectedItem();
+		User user = genericHib.getEntityById( User.class, selectedUser.getId() );
+		if ( user instanceof Employee employee ) {
+			employee.setEmployeeId( employeeIdField.getText() );
+			employee.setMedCertificate( medCertificateField.getText() );
+			employee.setEmploymentDate( employmentDatePicker.getValue() );
+			employee.setAdmin( isAdminCheckbox.isSelected() );
+		}
+		else if ( user instanceof Client client ) {
+			client.setCardNo( cardNoField.getText() );
+			client.setAddress( new Address( addressField.getText(), cityField.getText(), countryField.getText() ) );
+		}
+		genericHib.update( user );
+		loadUsersList();
 	}
 
 	public void deleteUser(ActionEvent actionEvent) {
-	}
-
-	public void disableClientFields(ActionEvent actionEvent) {
-	}
-
-	public void disableEmployeeFields(ActionEvent actionEvent) {
-
+		User selectedUser = usersList.getSelectionModel().getSelectedItem();
+		genericHib.delete( User.class, selectedUser.getId() );
+		loadUsersList();
 	}
 }

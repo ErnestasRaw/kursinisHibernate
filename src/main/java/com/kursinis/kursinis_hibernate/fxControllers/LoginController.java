@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.kursinis.kursinis_hibernate.Controllers.UserController;
+import com.kursinis.kursinis_hibernate.utils.UserController;
 import com.kursinis.kursinis_hibernate.hibernateControllers.UserHib;
-import com.kursinis.kursinis_hibernate.model.Address;
-import com.kursinis.kursinis_hibernate.model.Client;
 import com.kursinis.kursinis_hibernate.model.Employee;
 import com.kursinis.kursinis_hibernate.utils.PasswordHashingUtil;
 import jakarta.persistence.EntityManagerFactory;

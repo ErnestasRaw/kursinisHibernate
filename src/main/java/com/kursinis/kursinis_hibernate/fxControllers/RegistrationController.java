@@ -8,6 +8,7 @@ import com.kursinis.kursinis_hibernate.hibernateControllers.GenericHib;
 import com.kursinis.kursinis_hibernate.model.Cart;
 import com.kursinis.kursinis_hibernate.model.Client;
 import com.kursinis.kursinis_hibernate.hibernateControllers.UserHib;
+import com.kursinis.kursinis_hibernate.utils.ErrorUtil;
 import com.kursinis.kursinis_hibernate.utils.PasswordHashingUtil;
 import jakarta.persistence.EntityManagerFactory;
 import javafx.event.ActionEvent;
@@ -41,6 +42,7 @@ public class RegistrationController implements Initializable {
 	@FXML
 	public TextField cityField;
 	private EntityManagerFactory entityManagerFactory;
+
 	private UserHib userHib;
 	private GenericHib genericHib;
 

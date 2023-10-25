@@ -1,10 +1,8 @@
 package com.kursinis.kursinis_hibernate.model;
 
-import com.kursinis.kursinis_hibernate.model.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.hibernate.annotations.LazyCollection;
@@ -21,7 +19,7 @@ import java.util.List;
 public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 	private LocalDate dateCreated;
 	private String status;
 

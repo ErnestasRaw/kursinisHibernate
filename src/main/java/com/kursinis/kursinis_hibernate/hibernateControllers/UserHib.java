@@ -17,7 +17,7 @@ import jakarta.persistence.criteria.Root;
 import javafx.scene.control.Alert;
 import com.kursinis.kursinis_hibernate.model.Employee;
 import com.kursinis.kursinis_hibernate.model.User;
-import com.kursinis.kursinis_hibernate.fxControllers.ErrorUtil;
+import com.kursinis.kursinis_hibernate.utils.ErrorUtil;
 
 public class UserHib {
 

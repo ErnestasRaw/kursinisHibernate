@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.kursinis.kursinis_hibernate.fxControllers.ErrorUtil;
 import javafx.scene.control.Alert;
 
 /**

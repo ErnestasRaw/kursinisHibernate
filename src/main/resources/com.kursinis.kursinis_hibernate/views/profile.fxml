@@ -1,72 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane prefHeight="640.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kursinis.kursinis_hibernate.fxControllers.ProfileController">
-    <TextField fx:id="loginField" layoutX="77.0" layoutY="110.0" prefHeight="47.0" prefWidth="237.0" promptText="Prisijungimo vardas" stylesheets="@style.css" />
-    <Text layoutX="77.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prisijungimo vardas">
+<Pane prefHeight="640.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.kursinis.kursinis_hibernate.fxControllers.ProfileController">
+    <TextField fx:id="loginTextField" layoutX="14.0" layoutY="41.0" prefHeight="47.0" prefWidth="237.0"
+               promptText="Prisijungimo vardas" stylesheets="@style.css"/>
+    <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prisijungimo vardas">
         <font>
-            <Font name="Roboto Medium" size="16.0" />
+            <Font name="Roboto Medium" size="16.0"/>
         </font>
     </Text>
-    <TextField fx:id="nameField" layoutX="77.0" layoutY="200.0" prefHeight="47.0" prefWidth="237.0" promptText="Vardas" stylesheets="@style.css" />
-    <Text layoutX="77.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vardas">
+    <TextField fx:id="nameTextField" layoutX="14.0" layoutY="131.0" prefHeight="47.0" prefWidth="237.0"
+               promptText="Vardas" stylesheets="@style.css"/>
+    <Text layoutX="14.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vardas">
         <font>
-            <Font name="Roboto Medium" size="16.0" />
+            <Font name="Roboto Medium" size="16.0"/>
         </font>
     </Text>
-    <TextField fx:id="surnameField" layoutX="77.0" layoutY="287.0" prefHeight="47.0" prefWidth="237.0" promptText="Pavardė" stylesheets="@style.css" />
-    <Text layoutX="77.0" layoutY="277.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pavardė">
+    <TextField fx:id="surnameTextField" layoutX="14.0" layoutY="218.0" prefHeight="47.0" prefWidth="237.0"
+               promptText="Pavardė" stylesheets="@style.css"/>
+    <Text layoutX="14.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pavardė">
         <font>
-            <Font name="Roboto Medium" size="16.0" />
+            <Font name="Roboto Medium" size="16.0"/>
         </font>
     </Text>
-    <DatePicker fx:id="birthDateField" layoutX="77.0" layoutY="367.0" prefHeight="47.0" prefWidth="237.0" promptText="Gimimo data" />
-    <Text layoutX="77.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gimimo data">
+    <DatePicker fx:id="birthDateDatePicker" layoutX="14.0" layoutY="298.0" prefHeight="47.0" prefWidth="237.0"
+                promptText="Gimimo data"/>
+    <Text layoutX="14.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gimimo data">
         <font>
-            <Font name="Roboto Medium" size="16.0" />
+            <Font name="Roboto Medium" size="16.0"/>
         </font>
     </Text>
-    <TextField fx:id="cardNoField" layoutX="77.0" layoutY="456.0" prefHeight="47.0" prefWidth="237.0" promptText="Kortelė numeris" stylesheets="@style.css" />
-    <Text layoutX="77.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kortelės numeris">
+    <TextField fx:id="cardNoTextField" layoutX="14.0" layoutY="387.0" prefHeight="47.0" prefWidth="237.0"
+               promptText="Kortelė numeris" stylesheets="@style.css"/>
+    <Text layoutX="14.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Kortelės numeris">
         <font>
-            <Font name="Roboto Medium" size="16.0" />
+            <Font name="Roboto Medium" size="16.0"/>
         </font>
     </Text>
-    <TextField fx:id="countryField" layoutX="481.0" layoutY="111.0" prefHeight="47.0" prefWidth="237.0" promptText="Šalis" stylesheets="@style.css" />
-    <Text layoutX="481.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Šalis">
+    <TextField fx:id="countryTextField" layoutX="282.0" layoutY="42.0" prefHeight="47.0" prefWidth="237.0"
+               promptText="Šalis" stylesheets="@style.css"/>
+    <Text fx:id="countryText" layoutX="285.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Šalis">
         <font>
-            <Font name="Roboto Medium" size="16.0" />
+            <Font name="Roboto Medium" size="16.0"/>
         </font>
     </Text>
-    <TextField fx:id="cityField" layoutX="478.0" layoutY="201.0" prefHeight="47.0" prefWidth="237.0" promptText="Miestas" stylesheets="@style.css" />
-    <Text layoutX="480.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Miestas">
+    <TextField fx:id="cityTextField" layoutX="282.0" layoutY="133.0" prefHeight="47.0" prefWidth="237.0"
+               promptText="Miestas" stylesheets="@style.css"/>
+    <Text fx:id="cityText" layoutX="284.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Miestas">
         <font>
-            <Font name="Roboto Medium" size="16.0" />
+            <Font name="Roboto Medium" size="16.0"/>
         </font>
     </Text>
-    <TextField fx:id="addressField" layoutX="478.0" layoutY="288.0" prefHeight="47.0" prefWidth="237.0" promptText="Adresas" stylesheets="@style.css" />
-    <Text layoutX="481.0" layoutY="277.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adresas">
+    <TextField fx:id="addressTextField" layoutX="282.0" layoutY="220.0" prefHeight="47.0" prefWidth="237.0"
+               promptText="Adresas" stylesheets="@style.css"/>
+    <Text fx:id="addressText" layoutX="285.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adresas">
         <font>
-            <Font name="Roboto Medium" size="16.0" />
+            <Font name="Roboto Medium" size="16.0"/>
         </font>
     </Text>
-    <TextField fx:id="passwordField" layoutX="478.0" layoutY="368.0" prefHeight="47.0" prefWidth="237.0" promptText="Slaptažodis" stylesheets="@style.css" />
-    <Text layoutX="478.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Slaptažodis">
+    <TextField fx:id="passwordTextField" layoutX="14.0" layoutY="474.0" prefHeight="47.0" prefWidth="237.0"
+               promptText="Slaptažodis" stylesheets="@style.css"/>
+    <Text layoutX="14.0" layoutY="463.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Slaptažodis">
         <font>
-            <Font name="Roboto Medium" size="16.0" />
+            <Font name="Roboto Medium" size="16.0"/>
         </font>
     </Text>
-    <TextField fx:id="repeatPasswordField" layoutX="478.0" layoutY="457.0" prefHeight="47.0" prefWidth="237.0" promptText="Pakartokite slaptažodį" stylesheets="@style.css" />
-    <Text layoutX="478.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pakartokite slaptažodį">
+    <TextField fx:id="repeatPasswordTextField" layoutX="14.0" layoutY="563.0" prefHeight="47.0" prefWidth="237.0"
+               promptText="Pakartokite slaptažodį" stylesheets="@style.css"/>
+    <Text layoutX="14.0" layoutY="552.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pakartokite slaptažodį">
         <font>
-            <Font name="Roboto Medium" size="16.0" />
+            <Font name="Roboto Medium" size="16.0"/>
         </font>
     </Text>
-    <Button fx:id="updateButton" layoutX="599.0" layoutY="579.0" mnemonicParsing="false" onAction="#onUpdateProfileButtonClicked" prefHeight="47.0" prefWidth="237.0" snapToPixel="false" stylesheets="@style.css" text="Atnaujinti" textFill="WHITE" />
+
+    <Text fx:id="employeeCodeText" layoutX="553.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0"
+          text="Darbuotojo kodas">
+        <font>
+            <Font name="Roboto Medium" size="16.0"/>
+        </font>
+    </Text>
+    <TextField fx:id="medCertificateIdTextField" layoutX="550.0" layoutY="132.0" prefHeight="47.0" prefWidth="237.0"
+               promptText="Med. Sertifikato kodas" stylesheets="@style.css"/>
+    <Text fx:id="medCertificateText" layoutX="552.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0"
+          text="Med. Sertifikato kodas">
+        <font>
+            <Font name="Roboto Medium" size="16.0"/>
+        </font>
+    </Text>
+    <Text fx:id="isAdminText" layoutX="553.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0"
+          text="Administratorius">
+        <font>
+            <Font name="Roboto Medium" size="16.0"/>
+        </font>
+    </Text>
+    <TextField fx:id="employeeCodeTextField" layoutX="550.0" layoutY="41.0" prefHeight="47.0" prefWidth="237.0"
+               promptText="Darbuotojo kodas" stylesheets="@style.css"/>
+    <CheckBox fx:id="isAdminCheckBox" layoutX="554.0" layoutY="219.0" mnemonicParsing="false" prefHeight="47.0"
+              prefWidth="237.0" text="Administratorius"/>
+    <Text fx:id="employmentDateText" layoutX="550.0" layoutY="288.0" strokeType="OUTSIDE" strokeWidth="0.0"
+          text="Darbo pradžios data">
+        <font>
+            <Font name="Roboto Medium" size="16.0"/>
+        </font>
+    </Text>
+    <DatePicker fx:id="employmentDateDatePicker" layoutX="550.0" layoutY="298.0" prefHeight="47.0" prefWidth="237.0"
+                promptText="Darbo pradžios data"/>
+    <Button fx:id="updateButton" layoutX="599.0" layoutY="579.0" mnemonicParsing="false"
+            onAction="#onUpdateProfileButtonClicked" prefHeight="47.0" prefWidth="237.0" snapToPixel="false"
+            stylesheets="@style.css" text="Atnaujinti" textFill="WHITE"/>
 </Pane>

@@ -18,9 +18,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@DiscriminatorValue("C")
 @AllArgsConstructor
 @NoArgsConstructor
+@DiscriminatorValue("C")
 public class Client extends User {
 
 	@OneToOne(cascade = CascadeType.ALL)
@@ -59,6 +59,5 @@ public class Client extends User {
 		this.address = address;
 		this.cardNo = cardNo;
 	}
-
 
 }

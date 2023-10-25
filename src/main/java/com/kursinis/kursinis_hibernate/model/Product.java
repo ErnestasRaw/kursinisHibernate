@@ -32,7 +32,7 @@ public abstract class Product implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
-	private Long id;
+	private Integer id;
 	@Column(name = "title", nullable = false, length = 100)
 	private String title;
 	@Column(name = "price", length = 100)
@@ -72,15 +72,6 @@ public abstract class Product implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Product{" +
-				"id=" + id +
-				", title='" + title + '\'' +
-				", price=" + price +
-				", description='" + description + '\'' +
-				", warehouse=" + warehouse +
-				", cart=" + cart +
-				'}';
+		return title;
 	}
-
-
 }

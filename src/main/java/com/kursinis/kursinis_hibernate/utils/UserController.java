@@ -1,4 +1,4 @@
-package com.kursinis.kursinis_hibernate.Controllers;
+package com.kursinis.kursinis_hibernate.utils;
 
 import com.kursinis.kursinis_hibernate.model.User;
 import lombok.AllArgsConstructor;

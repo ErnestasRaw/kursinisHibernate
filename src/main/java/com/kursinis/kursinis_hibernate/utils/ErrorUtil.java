@@ -1,4 +1,4 @@
-package com.kursinis.kursinis_hibernate.fxControllers;
+package com.kursinis.kursinis_hibernate.utils;
 
 import java.util.Objects;
 
